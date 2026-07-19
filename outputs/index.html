@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Raccogli in un unico posto i link giornalieri ufficiali per Coin Master.">
+  <title>Ghost Master Italia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sky-glow sky-glow--one"></div>
+  <div class="sky-glow sky-glow--two"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Ghost Master Italia, home">
+      <span class="brand__coin">G</span>
+      <span class="brand__text"><strong>Ghost Master Italia</strong><small>I tuoi spin quotidiani</small></span>
+    </a>
+    <nav aria-label="Navigazione principale">
+      <a href="#premi">Premi</a>
+      <a href="#come-funziona">Come funziona</a>
+    </nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambia tema">☾</button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero__copy">
+        <span class="eyebrow"><span class="pulse"></span> Aggiornato ogni giorno</span>
+        <h1>I tuoi spin quotidiani, <em>senza perdere tempo.</em></h1>
+        <p>Trova in un solo posto i collegamenti promozionali pubblicati dai canali ufficiali. Tocca, apri il gioco e riscatta.</p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#premi">Vedi i premi di oggi <span>↓</span></a>
+          <span class="hero__aside">
+            <span class="hero__note">Gratis · Nessuna registrazione</span>
+            <span class="hero__credit">Ideato e curato da <strong>Bogdan e Selene</strong></span>
+          </span>
+        </div>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="orbit orbit--outer"></div>
+        <div class="orbit orbit--inner"></div>
+        <div class="big-coin"><span>↻</span></div>
+        <span class="spark spark--one">✦</span>
+        <span class="spark spark--two">✦</span>
+        <span class="mini-coin mini-coin--one">★</span>
+        <span class="mini-coin mini-coin--two">★</span>
+      </div>
+    </section>
+
+    <section class="rewards-section" id="premi">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow eyebrow--dark">Premi disponibili</span>
+          <h2>Le ricompense di oggi</h2>
+        </div>
+        <div class="date-pill" id="today-label"></div>
+      </div>
+
+      <div class="notice" role="note">
+        <span>ⓘ</span>
+        <p><strong>Sicurezza prima di tutto:</strong> il sito attiva soltanto collegamenti appartenenti ai domini Coin Master verificati. Gli altri pulsanti restano automaticamente disattivati.</p>
+      </div>
+
+      <div class="rewards-grid" id="rewards-grid"></div>
+      <p class="refresh-note">I link promozionali possono scadere. Se un premio non si apre, potrebbe essere già stato riscattato o non essere più disponibile.</p>
+    </section>
+
+    <section class="steps" id="come-funziona">
+      <span class="eyebrow eyebrow--dark">Semplice e veloce</span>
+      <h2>Come funziona</h2>
+      <div class="steps__grid">
+        <article><span>01</span><div><h3>Scegli un premio</h3><p>Controlla le ricompense disponibili per la giornata.</p></div></article>
+        <article><span>02</span><div><h3>Apri il collegamento</h3><p>Il link verificato ti porta all'app Coin Master.</p></div></article>
+        <article><span>03</span><div><h3>Riscatta nel gioco</h3><p>Conferma la ricompensa e torna a giocare.</p></div></article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand brand--footer" href="#top"><span class="brand__coin">G</span><span>Ghost Master Italia</span></a>
+    <p>Sito indipendente, non affiliato né approvato da Moon Active. Coin Master è un marchio dei rispettivi proprietari.</p>
+    <p class="creator-credit">© <span id="year"></span></p>
+  </footer>
+
+  <script src="rewards-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
