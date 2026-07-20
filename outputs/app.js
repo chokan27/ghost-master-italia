@@ -30,6 +30,18 @@ const groupedRewards = rewards.reduce((groups, reward) => {
 }, {});
 const sortedDates = Object.keys(groupedRewards).sort().reverse();
 
+const claimedStorageKey = "ghost-master-claimed-rewards";
+let claimedRewards;
+try {
+  claimedRewards = new Set(JSON.parse(localStorage.getItem(claimedStorageKey) || "[]"));
+} catch {
+  claimedRewards = new Set();
+}
+
+function saveClaimedRewards() {
+  localStorage.setItem(claimedStorageKey, JSON.stringify([...claimedRewards]));
+}
+
 sortedDates.forEach((date, dayIndex) => {
   const section = document.createElement("section");
   section.className = "reward-day";
@@ -39,21 +51,38 @@ sortedDates.forEach((date, dayIndex) => {
   section.innerHTML = `<div class="reward-day__heading"><h3>${dayName}</h3>${dateDetail}</div><div class="rewards-grid"></div>`;
   const dayGrid = section.querySelector(".rewards-grid");
 
-  groupedRewards[date].forEach((reward) => {
+  groupedRewards[date].forEach((reward, rewardIndex) => {
     const card = document.createElement("article");
     card.className = "reward-card";
     const hasLink = isVerifiedRewardUrl(reward.url);
+    const isClaimed = hasLink && claimedRewards.has(reward.url);
+    const automaticTitle = /^Premio giornaliero(?: #\d+)?$/i.test(reward.title);
+    const displayTitle = automaticTitle ? `Premio giornaliero #${rewardIndex + 1}` : reward.title;
+    if (isClaimed) card.classList.add("reward-card--claimed");
     card.innerHTML = `
       <div class="reward-card__top">
         <span class="reward-icon" aria-hidden="true">🎁</span>
-        <span class="reward-status">${hasLink ? "Disponibile" : "Non verificato"}</span>
+        <span class="reward-status">${isClaimed ? "Riscattato" : hasLink ? "Disponibile" : "Non verificato"}</span>
       </div>
-      <h3>${reward.title}</h3>
+      <h3>${displayTitle}</h3>
       <p>${readableDate} · Link Moon Active verificato</p>
       ${hasLink
-        ? `<a class="button button--primary" href="${reward.url}" target="_blank" rel="noopener noreferrer nofollow">Riscatta premio ↗</a>`
+        ? `<a class="button ${isClaimed ? "button--claimed" : "button--primary"}" href="${reward.url}" target="_blank" rel="noopener noreferrer nofollow">${isClaimed ? "Premio riscattato ✓" : "Riscatta premio ↗"}</a>`
         : `<button class="button button--disabled" type="button" disabled>Link non valido</button>`}
     `;
+
+    if (hasLink) {
+      const claimButton = card.querySelector("a.button");
+      claimButton.addEventListener("click", () => {
+        claimedRewards.add(reward.url);
+        saveClaimedRewards();
+        card.classList.add("reward-card--claimed");
+        card.querySelector(".reward-status").textContent = "Riscattato";
+        claimButton.classList.remove("button--primary");
+        claimButton.classList.add("button--claimed");
+        claimButton.textContent = "Premio riscattato ✓";
+      });
+    }
     dayGrid.appendChild(card);
   });
   grid.appendChild(section);
