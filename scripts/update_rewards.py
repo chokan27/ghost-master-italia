@@ -64,8 +64,23 @@ def from_lolvvv(page: str) -> list[tuple[str, str]]:
 
 def from_levvvel(page: str) -> list[tuple[str, str]]:
     found: list[tuple[str, str]] = []
-    for code in re.findall(r'data-href=["\']/cm/(pe_[A-Za-z0-9]+_20\d{6})["\']', page):
-        found.append((code, campaign_date(code)))
+    # LEVVVEL raggruppa i premi di ciascun giorno in una lista. Alcune volte
+    # Moon Active riutilizza un vecchio codice in un gruppo nuovo: in quel caso
+    # la data scritta nel codice non rappresenta il giorno di pubblicazione.
+    # Usiamo quindi la data piu recente della lista per tutti i premi del gruppo.
+    lists = re.findall(
+        r'<ol\b[^>]*class=["\'][^"\']*coin-master-rewards-list[^"\']*["\'][^>]*>(.*?)</ol>',
+        page,
+        re.I | re.S,
+    )
+    for reward_list in lists:
+        codes = re.findall(
+            r'data-href=["\']/cm/(pe_[A-Za-z0-9]+_20\d{6})["\']', reward_list, re.I
+        )
+        if not codes:
+            continue
+        group_date = max(campaign_date(code) for code in codes)
+        found.extend((code, group_date) for code in codes)
     return found
 
 
