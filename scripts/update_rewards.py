@@ -110,10 +110,18 @@ def main() -> int:
         if date.fromisoformat(published_date) < cutoff:
             continue
         old = saved.get(code, {})
+        old_title = old.get("title", "")
+        # Rinumera sempre i titoli automatici. Conserva soltanto descrizioni
+        # personalizzate, ad esempio "50 spin gratis".
+        title = (
+            old_title
+            if old_title and not re.fullmatch(r"Premio giornaliero(?: #\d+)?", old_title, re.I)
+            else "Premio giornaliero"
+        )
         merged.append(
             {
                 "date": published_date,
-                "title": old.get("title", "Premio giornaliero"),
+                "title": title,
                 "url": CANONICAL.format(code),
             }
         )
