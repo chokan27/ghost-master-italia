@@ -6,6 +6,9 @@ on:
     paths:
       - "outputs/**"
       - ".github/workflows/pages.yml"
+  workflow_run:
+    workflows: ["Aggiorna premi Coin Master"]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -19,6 +22,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -26,6 +30,8 @@ jobs:
     steps:
       - name: Scarica il sito
         uses: actions/checkout@v4
+        with:
+          ref: main
       - name: Configura GitHub Pages
         uses: actions/configure-pages@v5
       - name: Prepara i file del sito
